@@ -1,0 +1,20 @@
+﻿{
+  "ProviderId": "Microsoft.VisualStudio.ConnectedService.Wcf",
+  "Version": "15.0.30730.948",
+  "ExtendedData": {
+    "inputs": [
+      "http://w03727pafh0.pactual.net:8808/Utils/Gateway/SecureGateway/SecGtwNoCertHost.svc"
+    ],
+    "collectionTypes": [
+      "System.Array",
+      "System.Collections.Generic.Dictionary`2"
+    ],
+    "messageContract": true,
+    "namespaceMappings": [
+      "*, SecGtwNoCertHost"
+    ],
+    "sync": true,
+    "targetFramework": "netcoreapp3.0",
+    "typeReuseMode": "None"
+  }
+}

@@ -1,0 +1,164 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+    field.cattle.io/creatorId: u-vrndj4wrzt
+  creationTimestamp: null
+  generation: 1
+  labels:
+    cattle.io/creator: norman
+    workload.user.cattle.io/workloadselector: deployment-edm-infohub-consumer-integration-service
+  name: integration-service
+  selfLink: /apis/apps/v1/namespaces/edm-infohub-consumer/deployments/integration-service
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      workload.user.cattle.io/workloadselector: deployment-edm-infohub-consumer-integration-service
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        cattle.io/timestamp: "2020-04-20T16:05:40Z"
+        field.cattle.io/ports: '[null]'
+      creationTimestamp: null
+      labels:
+        workload.user.cattle.io/workloadselector: deployment-edm-infohub-consumer-integration-service
+    spec:
+      containers:
+      - env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Production
+        - name: AWS__Region
+          value: sa-east-1
+        - name: RabbitMQ__QueueConfiguration__AutoAck
+          value: "false"
+        - name: RabbitMQ__QueueConfiguration__Durable
+          value: "false"
+        - name: RabbitMQ__QueueConfiguration__Exchange
+          value: obr.infohub.message.out
+        - name: RabbitMQ__QueueConfiguration__QueueName
+          value: obr_infohub_integration
+        - name: RabbitMQ__QueueConfiguration__RoutingKey
+          value: legacy_integration
+        - name: RabbitMQ__DeadLetterCadastroQueue__AutoAck
+          value: "false"
+        - name: RabbitMQ__DeadLetterCadastroQueue__Durable
+          value: "true"
+        - name: RabbitMQ__DeadLetterCadastroQueue__DeadLetterExchange
+          value: obr.infohub.message.out
+        - name: RabbitMQ__DeadLetterCadastroQueue__QueueName
+          value: obr_infohub_cadastro-deadLetter
+        - name: RabbitMQ__DeadLetterCadastroQueue__RoutingKey
+          value: inoa_integration
+        - name: RabbitMQ__DadosCaracteristicosQueue__QueueName
+          value: obr_infohub_dados_caracteristicos
+        - name: RabbitMQ__DeadLetterAssinaturaQueue__QueueName
+          value: obr_infohub_assinaturas-deadLetter
+        - name: RabbitMQ__ConnectionConfiguration__Hostname
+          value: edm-rabbit.container.btgpactual.net
+        - name: RabbitMQ__ConnectionConfiguration__Password
+          value: radmin
+        - name: RabbitMQ__ConnectionConfiguration__Port
+          value: "5672"
+        - name: RabbitMQ__ConnectionConfiguration__UserName
+          value: radmin
+        - name: EDMCommonService
+          value: http://webfarm-sharedservices.pactual.net/EDM/EDMServices/EDMServices/EDMCommonService.svc
+        - name: EDMFixedIncomeOnService
+          value: http://webfarm-sharedservices.pactual.net/EDM/EDMServices/EDMServices/EDMFixedIncomeOnService.svc
+        - name: EDMGetPriceService
+          value: http://nsap370pafh.pactual.net/EDM/Price/GetPriceService.svc
+        - name: SecureGateway__AuthenticationKey
+          value: IHInoaConsum_PROD[NB]0B80D020-1B0B-4F20-8B93-3A4DD70429D942A8A4D6-2D22-49FF-AB9C-737E8CAE4402
+        - name: SecureGateway__ServiceUrl
+          value: http://webfarm-adm.pactual.net:8808/Utils/Gateway/SecureGateway/SecGtwNoCertHost.svc
+        - name: InfohubLuzUri
+          value: http://infohub.prod.eks-edm.container.btgpactual.net/
+        - name: CodigoPraca
+          value: BLUZ
+        - name: CodigoFeeder
+          value: "17"
+        - name: SQSQueuesConfig__papel__QueueName
+          value: fixedIncome_RSTPapel
+        - name: SQSQueuesConfig__papel__QueueURL
+          value: https://sqs.sa-east-1.amazonaws.com/943802629462/fixedIncome_RSTPapel
+        - name: SQSQueuesConfig__papel__MaxNumberOfMessages
+          value: "10"
+        - name: SQSQueuesConfig__papel__WaitTimeSeconds
+          value: "5"
+        - name: SQSQueuesConfig__evento__QueueName
+          value: fixedIncome_RSTEvento
+        - name: SQSQueuesConfig__evento__QueueURL
+          value: https://sqs.sa-east-1.amazonaws.com/943802629462/fixedIncome_RSTEvento
+        - name: SQSQueuesConfig__evento__MaxNumberOfMessages
+          value: "10"
+        - name: SQSQueuesConfig__evento__WaitTimeSeconds
+          value: "5"
+        - name: ConnectionStrings__Base
+          value: Server=PACTUAL7;Database=DB_CAD;User Id=LBPOINTEGRATION;Password=Secret;
+        - name: NifiIntegration__endpoint
+          value: http://edm-price-gateway-prod.pactual.net/nifi
+        - name: NifiIntegration__priceType
+          value: luz-pu
+        - name: NifiToken__endpoint
+          value: https://edm-price-tokenapi-prod.btgpactual.com/
+        - name: NifiToken__user
+          value: BpoIntegrationService
+        - name: NifiToken__password
+          value: d&D@tiaN$7qF
+        image: ImageName
+        imagePullPolicy: Always
+        name: integration-service
+        resources: 
+          requests:
+            memory: "300Mi"
+            cpu: "300m"
+          limits:
+            memory: "300Mi"
+            cpu: "300m"
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities: {}
+          privileged: false
+          procMount: Default
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false
+        stdin: true
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        tty: true
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status: {}
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: integrationhpa
+  namespace: edm-infohub-consumer
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: integration-service
+  minReplicas: 1
+  maxReplicas: 3
+  metrics: 
+  - type: Resource
+    resource:
+      name: memory 
+      target:
+        type: Utilization 
+        averageUtilization: 80
+---
